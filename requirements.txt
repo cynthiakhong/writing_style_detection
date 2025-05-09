@@ -1,0 +1,12 @@
+torch
+numpy
+pandas
+transformers
+tqdm
+scikit-learn
+gensim
+matplotlib
+seaborn
+nltk 
+jieba
+python-docx
