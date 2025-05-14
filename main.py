@@ -78,7 +78,7 @@ if __name__ == "__main__":
         method_configs['word2vec'] = config.WORD2VEC_CONFIG
         
     # Use clustering parameters from config if available
-    k_range = config.CLUSTERING_PARAMS.get('k_range', (2, 12))
+    k_range = config.CLUSTERING_PARAMS.get('k_range', (2, 15))
     
     print(f"\nGenerating vectors using methods: {methods}")
     

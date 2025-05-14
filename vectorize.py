@@ -504,8 +504,8 @@ def process_vectors(name, vectors, autoencoder, epochs=100, batch_size=32, encod
         model = VAE(
             input_dim=input_dim, 
             encoding_dim=encoding_dim,
-            hidden_dim=hidden_dim,
-            dropout_rate=0.2 if input_dim > 300 else 0.1  # Higher dropout for high-dim inputs
+            hidden_dim=min(256, input_dim),  # Reduce hidden_dim
+            dropout_rate=0.3 if input_dim > 300 else 0.1  # Higher dropout for high-dim inputs
         )
     else:
         model = Autoencoder(
@@ -546,7 +546,7 @@ def process_vectors(name, vectors, autoencoder, epochs=100, batch_size=32, encod
                 # For VAE
                 outputs, mu, logvar = model(inputs)
                 # Use VAE's loss function which includes KL divergence
-                loss, recon_loss, kl_loss = VAE.vae_loss(outputs, inputs, mu, logvar)
+                loss, recon_loss, kl_loss = VAE.vae_loss(outputs, inputs, mu, logvar, kl_weight=0.5)
                 if epoch == 0 or (epoch + 1) % 10 == 0:
                     # Print detailed loss components occasionally
                     print(f"  Epoch {epoch+1} - Total: {loss:.4f}, Recon: {recon_loss:.4f}, KL: {kl_loss:.4f}")

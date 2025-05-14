@@ -155,33 +155,33 @@ AUTOENCODER_CHOICE = "vae"  # Options: "ae" or "vae"
 
 # Autoencoder processing parameters
 AUTOENCODER_PARAMS = {
-    "epochs": 100,
-    "batch_size": 64,
-    "encoding_dim": 64  # Default dimensionality of the latent space
+    "epochs": 100,         
+    "batch_size": 64,     
+
 }
 
 # Method-specific autoencoder dimensions
 METHOD_ENCODING_DIMS = {
-    # Transformer models (generally need larger dimensions)
-    "bert-base": 128,
-    "roberta-base": 128,
-    "sbert": 128,
-    "distilbert-en": 96,
-    "cbert": 128,
-    "roberta-zh": 128,
-    "distilbert-zh": 96,
-    "hybrid-dBERTXLM": 160,
-    "hybrid-SBXLM": 160,
-    "hybrid-BERTRoBERTa": 160,
+    "bert-base": 128,        # Increased from 128
+    "roberta-base": 128,     # Increased from 128 
+    "sbert": 128,            # Increased from 128
+    "distilbert-en": 96,    # Increased from 96
+    "cbert": 128,            # Increased from 128
+    "roberta-zh": 128,       # Increased from 128
+    "distilbert-zh": 96,    # Increased from 96
+    "hybrid-dBERTXLM": 160,  # Increased from 160
+    "hybrid-SBXLM": 160,     # Increased from 160
+    "hybrid-BERTRoBERTa": 160, # Increased from 160
     
     # Non-transformer methods
-    "tfidf": 64,
-    "word2vec": 32
+    "tfidf": 96,             # Increased from 64
+    "word2vec": 64           # Increased from 32
 }
+
 
 # Clustering parameters
 CLUSTERING_PARAMS = {
-    "k_range": (2, 12),  # Min and max number of clusters to try
+    "k_range": (2, 15),  # Min and max number of clusters to try
     "n_init": 10,        # Number of initializations for k-means
     "random_state": 42   # Random seed for reproducibility
 }

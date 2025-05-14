@@ -86,20 +86,21 @@ class VAE(nn.Module):
         """
         super(VAE, self).__init__()
         
+        # More adaptive sizing for different embedding dimensions
         hidden_1 = min(hidden_dim*2, input_dim)
         hidden_2 = min(hidden_dim, input_dim//2)
         
-        # Encoder layers
+        # Encoder layers - keeping your structure but adjusting activations
         self.encoder = nn.Sequential(
             nn.Linear(input_dim, hidden_1),
             nn.LayerNorm(hidden_1),
-            nn.LeakyReLU(0.2),
+            nn.GELU(),  # Changed from LeakyReLU to GELU for better transformer compatibility
             nn.Dropout(dropout_rate),
             
             nn.Linear(hidden_1, hidden_2),
             nn.LayerNorm(hidden_2),
-            nn.LeakyReLU(0.2),
-            nn.Dropout(dropout_rate),
+            nn.GELU(),  # Changed to GELU
+            nn.Dropout(dropout_rate/2),  # Graduated dropout
         )
         
         # Mean and log variance layers for the latent space
@@ -110,22 +111,23 @@ class VAE(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(encoding_dim, hidden_2),
             nn.LayerNorm(hidden_2),
-            nn.LeakyReLU(0.2),
-            nn.Dropout(dropout_rate),
+            nn.GELU(),  # Changed to GELU
+            nn.Dropout(dropout_rate/2),  # Graduated dropout
             
             nn.Linear(hidden_2, hidden_1),
             nn.LayerNorm(hidden_1),
-            nn.LeakyReLU(0.2),
-            nn.Dropout(dropout_rate),
+            nn.GELU(),  # Changed to GELU
+            nn.Dropout(dropout_rate/4),  # Lower dropout near output
             
             nn.Linear(hidden_1, input_dim)
         )
                 
-        # Initialize weights
+        # Initialize weights with more modern initialization
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                nn.init.xavier_uniform_(m.weight)
-                nn.init.constant_(m.bias, 0)
+                # Slightly better initialization for GELU
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.zeros_(m.bias)
     
     def encode(self, x):
         """Encode input to latent distribution parameters"""
@@ -159,27 +161,43 @@ class VAE(nn.Module):
     @staticmethod
     def kl_loss(mu, logvar):
         """
-        Calculate KL divergence loss
+        Calculate KL divergence loss with clamping for stability
         Can be called statically: VAE.kl_loss(mu, logvar)
         """
-        # KL divergence: -0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
+        # KL divergence with clamping for numerical stability
         kld = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp(), dim=1)
+        # Clamp extremely large values that might cause instability
+        kld = torch.clamp(kld, min=0.0, max=50.0)
         return kld.mean()
     
     @staticmethod
     def reconstruction_loss(x_reconstructed, x_original, reduction='mean'):
         """
-        Calculate reconstruction loss (MSE)
+        Calculate reconstruction loss (MSE with Huber-like properties)
         Can be called statically: VAE.reconstruction_loss(x_reconstructed, x_original)
         """
-        return F.mse_loss(x_reconstructed, x_original, reduction=reduction)
+        # Use a combination of MSE and smoother L1 loss for better handling of outliers
+        mse_loss = F.mse_loss(x_reconstructed, x_original, reduction='none')
+        smooth_l1_loss = F.smooth_l1_loss(x_reconstructed, x_original, reduction='none', beta=0.1)
+        
+        # Blend the losses - majority MSE with some robustness from smooth L1
+        combined_loss = 0.9 * mse_loss + 0.1 * smooth_l1_loss
+        
+        if reduction == 'mean':
+            return combined_loss.mean()
+        elif reduction == 'sum':
+            return combined_loss.sum()
+        else:
+            return combined_loss
     
     @staticmethod
-    def vae_loss(x_reconstructed, x_original, mu, logvar, kl_weight=1.0):
+    def vae_loss(x_reconstructed, x_original, mu, logvar, kl_weight=0.5):
         """
-        Calculate total VAE loss (reconstruction + weighted KL divergence)
+        Calculate total VAE loss with balanced KL weight
         Can be called statically: VAE.vae_loss(x_reconstructed, x_original, mu, logvar)
         """
         recon_loss = VAE.reconstruction_loss(x_reconstructed, x_original)
         kl_loss = VAE.kl_loss(mu, logvar)
+        
+        # Lower KL weight to focus more on reconstruction quality
         return recon_loss + kl_weight * kl_loss, recon_loss, kl_loss

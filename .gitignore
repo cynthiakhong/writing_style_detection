@@ -1,3 +1,4 @@
 result/
 jupyter-notebook/
 *__pycache__/
+.conda/
