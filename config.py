@@ -2,12 +2,12 @@
 Configuration file for document analysis system.
 Contains language settings, paths, and embedding model configurations.
 """
+# =====================================================================
+# PATH CONFIGURATIONS
+# =====================================================================
 
 # Base data path
 BASE_DATA_PATH = r'C:\Users\cynth\OneDrive - Nanyang Technological University\nlp\OneDrive_2025-02-18'
-
-# Language configurations
-LANGUAGE_CHOICE = "eng"  # Options: "eng" or "cn"
 
 # Subdirectories for English documents
 ENGLISH_SUBDIRS = [
@@ -22,13 +22,27 @@ ENGLISH_SUBDIRS = [
 # Chinese documents path
 CHINESE_DATA_PATH = r'C:\Users\cynth\OneDrive - Nanyang Technological University\nlp\OneDrive_2025-02-18\Simulation'
 
+# =====================================================================
+# ANALYSIS CONFIGURATIONS
+# =====================================================================
+
+# Language configurations
+LANGUAGE_CHOICE = "eng"  # Options: "eng" or "cn"
+
+# Autoencoder choice
+AUTOENCODER_CHOICE = "ae"  # Options: "ae" or "vae"
+
 # Vectorization methods to use (will be expanded in main.py to include specific transformer models)
 # You can disable specific method groups by commenting them out
 VECTORIZE_METHODS = [
     'transformers',  # Will expand to all transformer models defined below
-    'tfidf',
-    'word2vec'
+   # 'tfidf',
+    #'word2vec'
 ]
+
+# =====================================================================
+# VECTORIZATION CONFIGURATIONS
+# =====================================================================
 
 # TF-IDF configuration
 TFIDF_CONFIG = {
@@ -150,8 +164,9 @@ ENGLISH_EMBEDDING_CONFIGS = [
     }
 ]
 
-# Autoencoder choice
-AUTOENCODER_CHOICE = "vae"  # Options: "ae" or "vae"
+# =====================================================================
+# AUTOENCODER CONFIGURATIONS
+# =====================================================================
 
 # Autoencoder processing parameters
 AUTOENCODER_PARAMS = {
@@ -162,22 +177,25 @@ AUTOENCODER_PARAMS = {
 
 # Method-specific autoencoder dimensions
 METHOD_ENCODING_DIMS = {
-    "bert-base": 128,        # Increased from 128
-    "roberta-base": 128,     # Increased from 128 
-    "sbert": 128,            # Increased from 128
-    "distilbert-en": 96,    # Increased from 96
-    "cbert": 128,            # Increased from 128
-    "roberta-zh": 128,       # Increased from 128
-    "distilbert-zh": 96,    # Increased from 96
-    "hybrid-dBERTXLM": 160,  # Increased from 160
-    "hybrid-SBXLM": 160,     # Increased from 160
-    "hybrid-BERTRoBERTa": 160, # Increased from 160
+    "bert-base": 128,      
+    "roberta-base": 128,    
+    "sbert": 128,           
+    "distilbert-en": 96,    
+    "cbert": 128,            
+    "roberta-zh": 128,       
+    "distilbert-zh": 96,   
+    "hybrid-dBERTXLM": 160, 
+    "hybrid-SBXLM": 160,     
+    "hybrid-BERTRoBERTa": 160, 
     
     # Non-transformer methods
-    "tfidf": 96,             # Increased from 64
-    "word2vec": 64           # Increased from 32
+    "tfidf": 96,         
+    "word2vec": 64           
 }
 
+# =====================================================================
+# CLUSTERING CONFIGURATIONS
+# =====================================================================
 
 # Clustering parameters
 CLUSTERING_PARAMS = {

@@ -111,12 +111,12 @@ class VAE(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(encoding_dim, hidden_2),
             nn.LayerNorm(hidden_2),
-            nn.GELU(),  # Changed to GELU
+            nn.GELU(),  
             nn.Dropout(dropout_rate/2),  # Graduated dropout
             
             nn.Linear(hidden_2, hidden_1),
             nn.LayerNorm(hidden_1),
-            nn.GELU(),  # Changed to GELU
+            nn.GELU(),  
             nn.Dropout(dropout_rate/4),  # Lower dropout near output
             
             nn.Linear(hidden_1, input_dim)
@@ -125,7 +125,6 @@ class VAE(nn.Module):
         # Initialize weights with more modern initialization
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                # Slightly better initialization for GELU
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                 nn.init.zeros_(m.bias)
     
