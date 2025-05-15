@@ -116,3 +116,24 @@ CLUSTERING_PARAMS = {
     "n_init": 10
 }
 ```
+
+## Results
+
+The system was evaluated on both English and Chinese documents using two types of autoencoders (AE and VAE):
+
+### English Documents
+
+- [English with Standard Autoencoder (AE)](./Results/English/AE)
+- [English with Variational Autoencoder (VAE)](./Results/English/VAE)
+
+### Chinese Documents
+
+- [Chinese with Standard Autoencoder (AE)](./Results/Chinese/AE)
+- [Chinese with Variational Autoencoder (VAE)](./Results/Chinese/VAE)
+
+Key findings:
+
+- Transformer-based models outperformed traditional methods in all scenarios
+- VAE generally produced better clustering than standard AE
+- For English, SBERT achieved the highest silhouette score (0.7099)
+- For Chinese, roberta-zh performed best with a score of (0.3127)
