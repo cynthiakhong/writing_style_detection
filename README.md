@@ -46,7 +46,6 @@ your_directory/
 ├── vectorize.py           # Embedding generation methods
 ├── autoencoders.py        # Autoencoder models for dimensionality reduction
 ├── utils.py               # Clustering and visualization utilities
-├── large_file_utils.py    # Utilities for handling large files
 ├── Results/               # Analysis results and visualizations
 │   ├── English/           # Results for English documents
 │   │   ├── AE/            # Standard autoencoder results
