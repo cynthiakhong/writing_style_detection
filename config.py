@@ -36,8 +36,8 @@ AUTOENCODER_CHOICE = "ae"  # Options: "ae" or "vae"
 # You can disable specific method groups by commenting them out
 VECTORIZE_METHODS = [
     'transformers',  # Will expand to all transformer models defined below
-   # 'tfidf',
-    #'word2vec'
+    'tfidf',
+    'word2vec'
 ]
 
 # =====================================================================
