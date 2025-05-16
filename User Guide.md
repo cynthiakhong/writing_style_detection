@@ -9,7 +9,8 @@ This guide will help you get started with the document analysis system for analy
 1. Click the green "Code" button
 2. Choose "Download ZIP"
 3. Extract the ZIP file to a location on your computer
-   Alternatively, if you have Git installed, you can clone the repository.
+
+Alternatively, if you have Git installed, you can clone the repository.
 
 ### Step 2: Install Requirements
 
@@ -27,7 +28,7 @@ This guide will help you get started with the document analysis system for analy
 1. Place your `.docx` documents in a folder
 2. For English documents: You can organize files in multiple subfolders
 3. For Chinese documents: Place all files in a single folder
-   Note: The system currently only supports .docx files
+   > **Note**: The system currently only supports .docx files
 
 ### Step 4: Configure Your Analysis
 
