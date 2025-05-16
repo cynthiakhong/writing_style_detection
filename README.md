@@ -2,6 +2,8 @@
 
 A framework for processing, embedding, and clustering text documents in both English and Chinese using transformer models, autoencoders, and unsupervised learning techniques.
 
+> **New Users**: Check out our [User Guide](./User%20Guide.md) for a beginner-friendly, step-by-step walkthrough to get started quickly!
+
 ## Overview
 
 This system provides a pipeline for document analysis with the following capabilities:
@@ -46,6 +48,7 @@ your_directory/
 ├── vectorize.py           # Embedding generation methods
 ├── autoencoders.py        # Autoencoder models for dimensionality reduction
 ├── utils.py               # Clustering and visualization utilities
+├── User Guide.md          # Detailed instructions and examples
 ├── Results/               # Analysis results and visualizations
 │   ├── English/           # Results for English documents
 │   │   ├── AE/            # Standard autoencoder results
